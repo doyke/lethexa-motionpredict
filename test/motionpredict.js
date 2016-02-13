@@ -52,3 +52,49 @@ describe('quadEquation', function () {
 
 
 
+describe('calcCPATime', function () {
+    describe('when track1(pos=[0,0,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,0,0])', function () {
+        it('should return a CPA of 1s', function () {
+		var position1 = new vecmat.Vector3d(0,0,0);
+		var velocity1 = new vecmat.Vector3d(0,1,0);
+		var position2 = new vecmat.Vector3d(0,1,0);
+		var velocity2 = new vecmat.Vector3d(0,0,0);
+
+		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
+                var expected = 1;
+
+                assert.deepEqual(expected, result);
+        });
+    }),
+
+    describe('when track1(pos=[0,1,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,1,0])', function () {
+        it('should return an undefined CPA', function () {
+		var position1 = new vecmat.Vector3d(0,1,0);
+		var velocity1 = new vecmat.Vector3d(0,1,0);
+		var position2 = new vecmat.Vector3d(0,1,0);
+		var velocity2 = new vecmat.Vector3d(0,1,0);
+
+		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
+                var expected = undefined;
+
+                assert.deepEqual(expected, result);
+        });
+    })
+
+    describe('when track1(pos=[0,2,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,0,0])', function () {
+        it('should return a CPA of -1s', function () {
+		var position1 = new vecmat.Vector3d(0,2,0);
+		var velocity1 = new vecmat.Vector3d(0,1,0);
+		var position2 = new vecmat.Vector3d(0,1,0);
+		var velocity2 = new vecmat.Vector3d(0,0,0);
+
+		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
+                var expected = -1;
+
+                assert.deepEqual(expected, result);
+        });
+    })
+});
+
+
+
