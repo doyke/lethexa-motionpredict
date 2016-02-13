@@ -309,5 +309,40 @@ describe('calcInterceptPosition', function () {
 });
 
 
+describe('calcApproachSpeed', function () {
+    describe('when interceptor(pos=[0,1,0], velocity=[0,-1,0]) and target(pos=[0,0,0], velocity=[0,0,0])', function () {
+        it('should return a position of [1,0,0]', function () {
+                var icptPos = new vecmat.Vector3d(0,1,0);
+                var icptVelo = new vecmat.Vector3d(0,-1,0);
+                var myPos = new vecmat.Vector3d(0,0,0);
+                var myVelo = new vecmat.Vector3d(0,0,0);
+
+                var result = motionpredict.calcApproachSpeed(myPos,myVelo,icptPos,icptVelo);
+                var expected = 1.0;
+
+                assert.deepEqual(expected, result);
+        });
+    })
+});
+
+
+describe('calcArrivalTime', function () {
+    describe('when interceptor(pos=[0,1,0], velocity=[0,-1,0]) and target(pos=[0,0,0], velocity=[0,0,0])', function () {
+        it('should return a position of [1,0,0]', function () {
+                var icptPos = new vecmat.Vector3d(0,1,0);
+                var icptVelo = new vecmat.Vector3d(0,-1,0);
+                var myPos = new vecmat.Vector3d(0,0,0);
+                var myVelo = new vecmat.Vector3d(0,0,0);
+
+                var result = motionpredict.calcArrivalTime(myPos,myVelo,icptPos,icptVelo);
+                var expected = 1.0;
+
+                assert.deepEqual(expected, result);
+        });
+    })
+});
+
+
+
 
 
