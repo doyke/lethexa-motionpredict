@@ -1,0 +1,35 @@
+{
+  "name": "lethexa-motionpredict",
+  "version": "0.1.0",
+  "description": "Library for motion prediction (e.g. CPA,...)",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lethexa/lethexa-motionpredict.git"
+  },
+  "keywords": [
+    "Physics",
+    "Simulation"
+  ],
+  "license": "MIT",
+  "author": "Tim Leerhoff",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.11.2",
+    "grunt-contrib-yuidoc": "~0.7.0",
+    "grunt-env": "^0.4.4",
+    "grunt-istanbul": "^0.6.1",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "lethexa-vecmat": "~1.1.2"
+  },
+  "author": {
+    "name": "Tim Leerhoff",
+    "email": "<tleerhof@web.de>"
+  }
+}
