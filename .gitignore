@@ -5,3 +5,4 @@
 /target/
 /coverage/
 results.txt
+*.swp
