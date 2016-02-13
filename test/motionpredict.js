@@ -190,4 +190,64 @@ describe('calcCPAPositionTarget2', function () {
 
 
 
+describe('calcInterceptTime', function () {
+    describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[0,0,0])', function () {
+        it('should return a time of 1s', function () {
+		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptVelo = 1.0;
+		var targetPos = new vecmat.Vector3d(1,0,0);
+		var targetVelo = new vecmat.Vector3d(0,0,0);
+
+		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
+                var expected = 1.0;
+
+                assert.deepEqual(expected, result);
+        });
+    }),
+
+    describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,1,0], velocity=[-1,0,0])', function () {
+        it('should return a time of 1s', function () {
+		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptVelo = 1.0;
+		var targetPos = new vecmat.Vector3d(1,1,0);
+		var targetVelo = new vecmat.Vector3d(-1,0,0);
+
+		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
+                var expected = 1.0;
+
+                assert.deepEqual(expected, result);
+        });
+    }),
+
+    describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[1,0,0])', function () {
+        it('should return a time of undefined', function () {
+		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptVelo = 1.0;
+		var targetPos = new vecmat.Vector3d(1,0,0);
+		var targetVelo = new vecmat.Vector3d(1,0,0);
+
+		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
+                var expected = undefined;
+
+                assert.deepEqual(expected, result);
+        });
+    }),
+
+    describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[2,0,0])', function () {
+        it('should return a time of undefined', function () {
+		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptVelo = 1.0;
+		var targetPos = new vecmat.Vector3d(1,0,0);
+		var targetVelo = new vecmat.Vector3d(1,0,0);
+
+		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
+                var expected = undefined;
+
+                assert.deepEqual(expected, result);
+        });
+    })
+});
+
+
+
 
