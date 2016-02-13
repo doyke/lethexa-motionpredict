@@ -5,6 +5,8 @@ This library is used to predict track position.
 
   * Intercept-calculation of two tracks. 
   * Closest point of approach of two tracks.
+  * Arrival time of one track at another.
+  * Approach speed of one track to another.
 
 
 Usage 
