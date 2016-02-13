@@ -1,7 +1,7 @@
-{
+{ 
   "name": "lethexa-motionpredict",
   "version": "0.1.0",
-  "description": "Library for motion prediction (e.g. CPA,...)",
+  "description": "Library for motion prediction (e.g. CPA,Intercept,...)",
   "main": "index.js",
   "scripts": {
     "test": "grunt test"
