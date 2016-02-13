@@ -1,4 +1,4 @@
-{ 
+{   
   "name": "lethexa-motionpredict",
   "version": "0.1.0",
   "description": "Library for motion prediction (e.g. CPA,Intercept,...)",
