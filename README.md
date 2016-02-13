@@ -19,7 +19,7 @@ Usage
 	var velocity2 = new vecmat.Vector3d(0,0,0);
 
 	var tcpa = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
-        console.log('TCPA=' + tcpa);
+	console.log('TCPA=' + tcpa);
 
 
 License
