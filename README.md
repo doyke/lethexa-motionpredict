@@ -11,15 +11,52 @@ This library is used to predict track position.
 
 Usage 
 -----
+	/////////////////////////////////////////////////
+	// Definition of required vector math functions
+	// as plugin for the calculations.
+	// Change this to adapt to your favourite vector library.
+	var MathFunc = {
+		add: function(a, b) {
+			return [
+				a[0] + b[0],
+				a[1] + b[1],
+				a[2] + b[2]
+			];
+		},
+		sub: function(a, b) {
+			return [
+				a[0] - b[0],
+				a[1] - b[1],
+				a[2] - b[2]
+			];
+		},
+		mulScalar: function(a, s) {
+			return [
+				a[0] * s,
+				a[1] * s,
+				a[2] * s
+			];
+		},
+		dot: function(a, b) {
+			return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+		},
+		lengthSquared: function(a) {
+			return a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
+		}
+	};
+	/////////////////////////////////////////////
 
-	var motionpredict = require('lethexa-motionpredict');
+
+
+	//// THE EXAMPLE ////
+	var motionpredict = require('lethexa-motionpredict').withMathFunc(MathFunc);
 
 	// Calculate TCPA
-	var position1 = new vecmat.Vector3d(0,0,0);
-	var velocity1 = new vecmat.Vector3d(0,1,0);
+	var position1 = [0,0,0];
+	var velocity1 = [0,1,0];
 
-	var position2 = new vecmat.Vector3d(0,1,0);
-	var velocity2 = new vecmat.Vector3d(0,0,0);
+	var position2 = [0,1,0];
+	var velocity2 = [0,0,0];
 
 	var tcpa = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
 	console.log('TCPA=' + tcpa);
@@ -27,11 +64,11 @@ Usage
 
 
 	// Calculate intercept time
-	var icptPos = new vecmat.Vector3d(0,0,0);
+	var icptPos = [0,0,0];
 	var icptVelo = 1.0;
 
-	var targetPos = new vecmat.Vector3d(1,0,0);
-	var targetVelo = new vecmat.Vector3d(0,0,0);
+	var targetPos = [1,0,0];
+	var targetVelo = [0,0,0];
 
 	var ticpt = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
 
