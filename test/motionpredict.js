@@ -1,22 +1,33 @@
 var assert = require('assert');
-var vecmat = require('lethexa-vecmat');
 
 
 var MathFunc = {
     add: function(a, b) {
-      return a.add(b);
+      return [
+        a[0] + b[0],
+        a[1] + b[1],
+        a[2] + b[2]
+      ];
     },
     sub: function(a, b) {
-      return a.sub(b);
+      return [
+        a[0] - b[0],
+        a[1] - b[1],
+        a[2] - b[2]
+      ];
     },
     mulScalar: function(a, s) {
-      return a.mul(s);
+      return [
+        a[0] * s,
+        a[1] * s,
+        a[2] * s
+      ];
     },
     dot: function(a, b) {
-      return a.dot(b);
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
     },
     lengthSquared: function(a) {
-      return a.lengthSquared();
+      return a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
     }
 };
 
@@ -24,16 +35,14 @@ var MathFunc = {
 var motionpredict = require((process.env.APP_DIR_FOR_CODE_COVERAGE || '../lib/') + 'motionpredict.js').withMathFunc(MathFunc);
 
 
-
-
 describe('getPositionByVeloAndTime', function () {
     describe('when position=[1,2,3], velocity=[1,1,1] and dt=1.0', function () {
         it('should return a new position of [2,3,4]', function () {
-		var position = new vecmat.Vector3d(1,2,3);
-		var velocity = new vecmat.Vector3d(1,1,1);
+		var position = [1,2,3];
+		var velocity = [1,1,1];
 		var dt = 1.0;
                 var result = motionpredict.getPositionByVeloAndTime(position, velocity, dt);
-                var expected = new vecmat.Vector3d(2,3,4);
+                var expected = [2,3,4];
 
                 assert.deepEqual(expected, result);
         });
@@ -43,44 +52,13 @@ describe('getPositionByVeloAndTime', function () {
 
 
 
-describe('quadEquation', function () {
-    describe('when p=1 and q=0.25', function () {
-        it('should return one solution [-0.5]', function () {
-		var result = motionpredict.quadEquation(1.0, 0.25);
-		var expected = [-0.5]; 
-
-            	assert.deepEqual(expected, result);
-        });
-    }),
-
-    describe('when p=2 and q=0', function () {
-        it('should return two solutions [0, -2]', function () {
-		var result = motionpredict.quadEquation(2.0, 0.0);
-		var expected = [0, -2]; 
-
-            	assert.deepEqual(expected, result);
-        });
-    });
-
-    describe('when p=2 and q=2', function () {
-        it('should return no solutions', function () {
-		var result = motionpredict.quadEquation(2.0, 2.0);
-		var expected = []; 
-
-            	assert.deepEqual(expected, result);
-        });
-    });
-});
-
-
-
 describe('calcCPATime', function () {
     describe('when track1(pos=[0,0,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,0,0])', function () {
         it('should return a TCPA of 1s', function () {
-		var position1 = new vecmat.Vector3d(0,0,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(0,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,0,0];
+		var velocity1 = [0,1,0];
+		var position2 = [0,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
                 var expected = 1;
@@ -91,10 +69,10 @@ describe('calcCPATime', function () {
 
     describe('when track1(pos=[0,1,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,1,0])', function () {
         it('should return an undefined TCPA', function () {
-		var position1 = new vecmat.Vector3d(0,1,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(0,1,0);
-		var velocity2 = new vecmat.Vector3d(0,1,0);
+		var position1 = [0,1,0];
+		var velocity1 = [0,1,0];
+		var position2 = [0,1,0];
+		var velocity2 = [0,1,0];
 
 		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
                 var expected = undefined;
@@ -105,10 +83,10 @@ describe('calcCPATime', function () {
 
     describe('when track1(pos=[0,2,0], velocity=[0,1,0]) and track2(pos=[0,1,0], velocity=[0,0,0])', function () {
         it('should return a TCPA of -1s', function () {
-		var position1 = new vecmat.Vector3d(0,2,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(0,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,2,0];
+		var velocity1 = [0,1,0];
+		var position2 = [0,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPATime(position1,velocity1,position2,velocity2);
                 var expected = -1;
@@ -123,13 +101,13 @@ describe('calcCPATime', function () {
 describe('calcCPAPositionTarget1', function () {
     describe('when track1(pos=[0,0,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,0,0])', function () {
         it('should return a CPA of [0,1,0]', function () {
-		var position1 = new vecmat.Vector3d(0,0,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,0,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPAPositionTarget1(position1,velocity1,position2,velocity2);
-                var expected = new vecmat.Vector3d(0,1,0);
+                var expected = [0,1,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -137,10 +115,10 @@ describe('calcCPAPositionTarget1', function () {
 
     describe('when track1(pos=[0,1,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,1,0])', function () {
         it('should return an undefined CPA', function () {
-		var position1 = new vecmat.Vector3d(0,1,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,1,0);
+		var position1 = [0,1,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,1,0];
 
 		var result = motionpredict.calcCPAPositionTarget1(position1,velocity1,position2,velocity2);
                 var expected = undefined;
@@ -151,13 +129,13 @@ describe('calcCPAPositionTarget1', function () {
 
     describe('when track1(pos=[0,2,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,0,0])', function () {
         it('should return a CPA of [0,1,0]', function () {
-		var position1 = new vecmat.Vector3d(0,2,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,2,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPAPositionTarget1(position1,velocity1,position2,velocity2);
-                var expected = new vecmat.Vector3d(0,1,0);
+                var expected = [0,1,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -169,13 +147,13 @@ describe('calcCPAPositionTarget1', function () {
 describe('calcCPAPositionTarget2', function () {
     describe('when track1(pos=[0,0,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,0,0])', function () {
         it('should return a CPA of [1,1,0]', function () {
-		var position1 = new vecmat.Vector3d(0,0,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,0,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPAPositionTarget2(position1,velocity1,position2,velocity2);
-                var expected = new vecmat.Vector3d(1,1,0);
+                var expected = [1,1,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -183,10 +161,10 @@ describe('calcCPAPositionTarget2', function () {
 
     describe('when track1(pos=[0,1,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,1,0])', function () {
         it('should return an undefined CPA', function () {
-		var position1 = new vecmat.Vector3d(0,1,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,1,0);
+		var position1 = [0,1,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,1,0];
 
 		var result = motionpredict.calcCPAPositionTarget2(position1,velocity1,position2,velocity2);
                 var expected = undefined;
@@ -197,13 +175,13 @@ describe('calcCPAPositionTarget2', function () {
 
     describe('when track1(pos=[0,2,0], velocity=[0,1,0]) and track2(pos=[1,1,0], velocity=[0,0,0])', function () {
         it('should return a CPA of [1,1,0]', function () {
-		var position1 = new vecmat.Vector3d(0,2,0);
-		var velocity1 = new vecmat.Vector3d(0,1,0);
-		var position2 = new vecmat.Vector3d(1,1,0);
-		var velocity2 = new vecmat.Vector3d(0,0,0);
+		var position1 = [0,2,0];
+		var velocity1 = [0,1,0];
+		var position2 = [1,1,0];
+		var velocity2 = [0,0,0];
 
 		var result = motionpredict.calcCPAPositionTarget2(position1,velocity1,position2,velocity2);
-                var expected = new vecmat.Vector3d(1,1,0);
+                var expected = [1,1,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -215,10 +193,10 @@ describe('calcCPAPositionTarget2', function () {
 describe('calcInterceptTime', function () {
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[0,0,0])', function () {
         it('should return a time of 1s', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(0,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [0,0,0];
 
 		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = 1.0;
@@ -229,10 +207,10 @@ describe('calcInterceptTime', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,1,0], velocity=[-1,0,0])', function () {
         it('should return a time of 1s', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,1,0);
-		var targetVelo = new vecmat.Vector3d(-1,0,0);
+		var targetPos = [1,1,0];
+		var targetVelo = [-1,0,0];
 
 		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = 1.0;
@@ -243,10 +221,10 @@ describe('calcInterceptTime', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[1,0,0])', function () {
         it('should return a time of undefined', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(1,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [1,0,0];
 
 		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = undefined;
@@ -257,10 +235,10 @@ describe('calcInterceptTime', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[2,0,0])', function () {
         it('should return a time of undefined', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(1,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [1,0,0];
 
 		var result = motionpredict.calcInterceptTime(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = undefined;
@@ -275,13 +253,13 @@ describe('calcInterceptTime', function () {
 describe('calcInterceptPosition', function () {
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[0,0,0])', function () {
         it('should return a position of [1,0,0]', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(0,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [0,0,0];
 
 		var result = motionpredict.calcInterceptPosition(icptPos,icptVelo,targetPos,targetVelo);
-                var expected = new vecmat.Vector3d(1,0,0);
+                var expected = [1,0,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -289,13 +267,13 @@ describe('calcInterceptPosition', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,1,0], velocity=[-1,0,0])', function () {
         it('should return a position of [0,1,0]', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,1,0);
-		var targetVelo = new vecmat.Vector3d(-1,0,0);
+		var targetPos = [1,1,0];
+		var targetVelo = [-1,0,0];
 
 		var result = motionpredict.calcInterceptPosition(icptPos,icptVelo,targetPos,targetVelo);
-                var expected = new vecmat.Vector3d(0,1,0);
+                var expected = [0,1,0];
 
                 assert.deepEqual(expected, result);
         });
@@ -303,10 +281,10 @@ describe('calcInterceptPosition', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[1,0,0])', function () {
         it('should return a time of undefined', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(1,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [1,0,0];
 
 		var result = motionpredict.calcInterceptPosition(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = undefined;
@@ -317,10 +295,10 @@ describe('calcInterceptPosition', function () {
 
     describe('when interceptor(pos=[0,0,0], velocity=1) and target(pos=[1,0,0], velocity=[2,0,0])', function () {
         it('should return a time of undefined', function () {
-		var icptPos = new vecmat.Vector3d(0,0,0);
+		var icptPos = [0,0,0];
 		var icptVelo = 1.0;
-		var targetPos = new vecmat.Vector3d(1,0,0);
-		var targetVelo = new vecmat.Vector3d(1,0,0);
+		var targetPos = [1,0,0];
+		var targetVelo = [1,0,0];
 
 		var result = motionpredict.calcInterceptPosition(icptPos,icptVelo,targetPos,targetVelo);
                 var expected = undefined;
@@ -331,13 +309,14 @@ describe('calcInterceptPosition', function () {
 });
 
 
+
 describe('calcApproachSpeed', function () {
     describe('when interceptor(pos=[0,1,0], velocity=[0,-1,0]) and target(pos=[0,0,0], velocity=[0,0,0])', function () {
         it('should return a position of [1,0,0]', function () {
-                var icptPos = new vecmat.Vector3d(0,1,0);
-                var icptVelo = new vecmat.Vector3d(0,-1,0);
-                var myPos = new vecmat.Vector3d(0,0,0);
-                var myVelo = new vecmat.Vector3d(0,0,0);
+                var icptPos = [0,1,0];
+                var icptVelo = [0,-1,0];
+                var myPos = [0,0,0];
+                var myVelo = [0,0,0];
 
                 var result = motionpredict.calcApproachSpeed(myPos,myVelo,icptPos,icptVelo);
                 var expected = 1.0;
@@ -348,13 +327,14 @@ describe('calcApproachSpeed', function () {
 });
 
 
+
 describe('calcArrivalTime', function () {
     describe('when interceptor(pos=[0,1,0], velocity=[0,-1,0]) and target(pos=[0,0,0], velocity=[0,0,0])', function () {
         it('should return a position of [1,0,0]', function () {
-                var icptPos = new vecmat.Vector3d(0,1,0);
-                var icptVelo = new vecmat.Vector3d(0,-1,0);
-                var myPos = new vecmat.Vector3d(0,0,0);
-                var myVelo = new vecmat.Vector3d(0,0,0);
+                var icptPos = [0,1,0];
+                var icptVelo = [0,-1,0];
+                var myPos = [0,0,0];
+                var myVelo = [0,0,0];
 
                 var result = motionpredict.calcArrivalTime(myPos,myVelo,icptPos,icptVelo);
                 var expected = 1.0;
@@ -363,8 +343,5 @@ describe('calcArrivalTime', function () {
         });
     })
 });
-
-
-
 
 

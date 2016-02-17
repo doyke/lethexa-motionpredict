@@ -26,7 +26,6 @@
     "mocha": "^2.2.5"
   },
   "dependencies": {
-    "lethexa-vecmat": "~1.1.2"
   },
   "author": {
     "name": "Tim Leerhoff",
